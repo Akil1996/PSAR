@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .navbar-ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+      }
+      .navbar-li {
+        float: left;
+      }
+      .navbar-li .navbar-a{
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+      }
+      .navbar-li .navbar-a:hover:not(.active) {
+        background-color: #111;
+      }
+      .active {
+        background-color: #04AA6D;
+      }
+      .head-jumbotron {
+        border-radius: 5px;
+        background-color: #e6eeff;
+        padding: 10px;
+        text-align: right;
+        margin:20px;
+      }
+      .head-select{
+        width: 10%;
+        padding: 8px 10px;
+        margin: 8px 4px;
+        box-sizing: border-box;
+        border: 2px solid #d9d9d9;
+        border-radius: 12px;
+      }
+      .head-small-textinput{
+        padding: 8px 10px;
+        margin: 8px 4px;
+        box-sizing: border-box;
+        border: 2px solid #d9d9d9;
+        border-radius: 12px;
+      }
+      .head-button {
+        border: none;
+        color: white;
+        padding: 8px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        margin: 20px 4px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        background-color: white;
+        color: black;
+        border: 2px solid #008CBA;
+        border-radius: 8px;
+      }
+      .head-button:hover {
+        background-color: #b3ecff;
+        color: black;
+      }
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 80%;
+      }
+      td, th {
+        border: 1px solid #1a1919;
+        text-align: left;
+        padding: 8px;
+      }
+      tr:nth-child(even) {
+        background-color: #f7c7c7;
+      }
+      .center {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      * {box-sizing: border-box} 
+      /* Set height of body and the document to 100% */
+      body, html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial;
+      }
+      /* Style tab links */
+      .tablink {
+        background-color: #555;
+        color: white;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        font-size: 17px;
+        width: 25%;
+      }
+      .tablink:hover {
+        background-color: #777;
+      }
+      /* Style the tab content (and add height:100% for full page content) */
+      .tabcontent {
+        color: black;
+        display: none;
+        padding: 100px 20px;
+        height: 100%;
+      }
+      #Home {background-color: rgb(255, 255, 255);}
+      #News {background-color: rgb(255, 255, 255);}
+      #Contact {background-color: rgb(255, 255, 255);}
+      #About {background-color: rgb(255, 255, 255);}
+
+      .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 12px;
+        text-align: center;
+      }
+      .flex-item-left {
+        background-color: #ffffff;
+        padding: 10px;
+        flex: 50%;
+      }
+      .flex-item-right {
+        background-color: rgb(255, 255, 255);
+        padding: 10px;
+        flex: 50%;
+      }
+      .flex-item-max {
+        background-color: rgb(255, 255, 255);
+        padding: 150px;
+        flex: 80%;
+      }
+      .flex-item-min {
+        background-color: rgb(255, 255, 255);
+        padding: 80px;
+        flex: 15%;
+      }
+      .flex-item-bar-graph {
+        background-color: rgb(255, 255, 255);
+        padding: 10px;
+        flex: 30%;
+      }
+      /* Responsive layout - makes a one column-layout instead of a two-column layout */
+      @media (max-width: 800px) {
+        .flex-item-right, .flex-item-left, .flex-item-max, .flex-item-min{
+          flex: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+
+      <!-- Navbar start -->
+      <ul class="navbar-ul">
+          <li class="navbar-li"><a class="navbar-a" href="#home">Home</a></li>
+          <li class="navbar-li"><a class="navbar-a" href="#news">News</a></li>
+          <li class="navbar-li"><a class="navbar-a" href="#contact">Contact</a></li>
+          <li class="navbar-li" style="float:right"><a class="navbar-a active" href="#about">About</a></li>
+      </ul>
+      <!-- Navbar Ends -->
+      <div class="head-jumbotron">
+        <form method="GET" id="backtest-form">
+            {% csrf_token %}
+            <label for="pin">Crypto</label>
+            <input class="head-small-textinput" id="psarStart" type="checkbox" value="0.2" id="psarStart" maxlength="4" size="4">
+            <input class="head-select" type="text" id="stockName" name="stockName"  value="AAPL" placeholder="Stock Name">
+            <input class="head-select" type="text" id="fund" name="fund"  value="1000" placeholder="Fund">
+            <label for="pin">Psar Value</label>
+            <input class="head-small-textinput" id="psarStart" type="text" value="0.2" id="psarStart" maxlength="4" size="4">
+            <input class="head-small-textinput" id="psarIncrement" type="text" value="0.02" id="psarIncrement" maxlength="4" size="4">
+            <input class="head-small-textinput" id="psarMaxvalue" type="text" value="0.2" id="psarMaxvalue" maxlength="4" size="4">
+            <select id="timeFrame" class="head-select" name="timeFrame">
+                <option value="day">day</option>
+                <option value="1 hour">1 hour</option>
+                <option value="2 hour">2 hour</option>
+                <option value="4 hour">4 hour</option>
+                <option value="week">week</option>
+                <option value="month">month</option>
+            </select>
+            <input id="fromDate" class="head-select" type="date" value="2021-08-01" name="fromdate"  placeholder="From Date">
+            <input id="toDate" class="head-select" type="date" value="2021-09-30" name="todate"   placeholder="To Date">
+            <button class="head-button" type="submit">Submit</button>
+        </form>
+      </div>
+      <button class="tablink" onclick="openPage('Home', this, 'red')">Detailed Report</button>
+      <button class="tablink" onclick="openPage('News', this, 'green')" id="defaultOpen">Profit/Loss Report</button>
+      <button class="tablink" onclick="openPage('Contact', this, 'blue')">Performance</button>
+      <button class="tablink" onclick="openPage('About', this, 'orange')">About</button>
+      <div id="Home" class="tabcontent">
+          <div>
+              <table class="center" id="detailed-report" >
+              </table>
+          </div>
+      </div>
+      <div id="News" class="tabcontent">
+        <div>
+          <table class="center" id="PL-report" >
+          </table>
+        </div>
+      </div>
+      <div id="Contact" class="tabcontent center">
+          
+          <div class="flex-container">  
+              <div class="flex-item-min">
+                  <canvas id="capital"></canvas>
+              </div>
+              <div class="flex-item-min">
+                  <canvas id="trades"></canvas>
+              </div>
+              <div class="flex-item-min">
+                  <canvas id="drawdown"></canvas>
+              </div>
+              <div class="flex-item-min">
+                  <canvas id="profitloss"></canvas>
+              </div>
+          </div>
+          <div class="flex-container">
+              <div class="flex-item-left">
+                  <canvas id="volatilityChart"></canvas>
+              </div>
+              <div class="flex-item-right">
+                  <canvas id="volChart"></canvas>
+              </div>
+          </div>
+          <div class="flex-container">
+              <div class="flex-item-left">
+                  <table id="statistical-feedback" class="center">
+                  </table>
+              </div>
+              <div class="flex-item-right">
+                  <table id="trade-feedback" class="center">
+                  </table>
+              </div>
+          </div>
+      </div>
+      <div id="About" class="tabcontent">
+        <h3>About</h3>
+        <p>Who we are and what we do.</p>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.5.1.js" 
+      integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+      crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        function generate_volatility_graph(lab, indvol, vol){
+            var ctx = document.getElementById('volatilityChart').getContext('2d');
+            var mixedChart = new Chart(ctx, {
+                data: {
+                    datasets: [{
+                        type: 'line',
+                        label: 'Ind Volatility',
+                        backgroundColor: "#eeccff",
+                        borderColor: "#cc66ff",
+                        data: indvol,
+                    }, {
+                        type: 'line',
+                        backgroundColor: "#b3d9ff",
+                        borderColor: "#0073e6",
+                        label: 'Volatility',
+                        data: vol,
+                    }],
+                    labels: lab
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+      </script>
+      <script>
+        function generate_volatility_graphs(){
+            var ctx = document.getElementById('volChart').getContext('2d');
+            var mixedChart = new Chart(ctx, {
+                data: {
+                    datasets: [{
+                        type: 'bar',
+                        label: 'Bar Dataset',
+                        data: [10, 20, 30, 40]
+                    }, {
+                        type: 'line',
+                        label: 'Line Dataset',
+                        data: [0.12, 0.50, 0.40, 0.20],
+                    }],
+                    labels: ['January', 'February', 'March', 'April']
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+          
+      </script>
+      <script>
+        function generate_capital_graph(invested, returns){
+            var ctx = document.getElementById('capital').getContext('2d');
+            var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: ["Invested", "Returns"],
+              datasets: [{
+                backgroundColor: ["#ff8080", "#8cd98c"],
+                hoverOffset: 6,
+                data: [invested,returns]
+              }]
+            },
+            options: {
+              legend: { reverse: false }
+            }
+        });
+        }
+          
+      </script>
+      <script>
+        function generate_trades_graph(pos, neg){
+            var ctx = document.getElementById('trades').getContext('2d');
+            var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: ["Total Positive Trades" , "Total Negative Trades"],
+              datasets: [{
+                backgroundColor: ["#8cd98c", "#ff8080"],
+                hoverOffset: 6,
+                data: [ pos, neg]
+              }]
+            },
+            options: {
+              legend: { reverse: false }
+            }
+        });
+        }
+          
+      </script>
+      <script>
+        function generate_drawdown_graph(pos, neg){
+            var ctx = document.getElementById('drawdown').getContext('2d');
+            var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ["Max Profit In one Trade" , "Max Loss In one Trade"],
+                datasets: [{
+                  backgroundColor: ["#8cd98c", "#ff8080"],
+                  hoverOffset: 6,
+                  data: [ pos, neg]
+                }]
+              },
+              options: {
+                legend: { reverse: false }
+              }
+          });
+        }
+          
+      </script>
+      <script>
+        function generate_profitloss_graph(pos, neg){
+            var ctx = document.getElementById('profitloss').getContext('2d');
+            var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: ["Total PL Positive Trades" , "Total PL Negative Trades"],
+              datasets: [{
+                backgroundColor: ["#8cd98c", "#ff8080"],
+                hoverOffset: 6,
+                data: [ pos, neg]
+              }]
+            },
+            options: {
+              legend: { reverse: false }
+            }
+          });
+        }
+          
+      </script>    
+      <script>
+          function openPage(pageName,elmnt,color) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                  tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablink");
+                for (i = 0; i < tablinks.length; i++) {
+                  tablinks[i].style.backgroundColor = "";
+                }
+                document.getElementById(pageName).style.display = "block";
+                elmnt.style.backgroundColor = color;
+              }
+          // Get the element with id="defaultOpen" and click on it
+          document.getElementById("defaultOpen").click();
+      </script>
+      <script>
+          // adding detailed report table 
+          function add_detailed_table(dataDic){
+              var d1 = document.getElementById('detailed-report');
+              d1.insertAdjacentHTML('afterbegin', "<tr><th>DateTime</th><th>Open</th><th>High</th><th>Low</th><th>Close</th><th>Psar Value</th><th>Volatility</th><th>Signal</th></tr>");
+              for (let i = 0; i < dataDic.length; i++) {          
+                  d1.insertAdjacentHTML('beforeend', "<tr><td>" + dataDic[i]["dtime"] + "</td><td> "+ dataDic[i]["open"] +"</td><td>"+ dataDic[i]["high"] +"</td><td>"+ dataDic[i]["low"] +"</td><td>"+ dataDic[i]["close"] +"</td><td>"+ dataDic[i]["psarValue"] +"</td><td>"+ dataDic[i]["volatility"] +"</td><td>"+ dataDic[i]["signal"] +"</td></tr>"); 
+              }
+          }
+      </script>
+      <script>  
+          function add_profitloss_table(plDic){
+              var d2 = document.getElementById('PL-report');
+              d2.insertAdjacentHTML('afterbegin', "<tr><th>Entry DateTime</th><th>Exit DateTime</th><th>Entry Price</th><th>Exit Price</th><th>Highlow</th><th>Volatility</th><th>Signal</th><th>PL</th><th>PL %</th></tr>");
+              for (let i = 0; i < plDic.length; i++) {
+                   d2.insertAdjacentHTML('beforeend', "<tr><td>" + plDic[i]["entryTime"] + "</td><td> "+ plDic[i]["exitTime"] +"</td><td> "+ plDic[i]["entryPrice"] +"</td><td>"+ plDic[i]["exitPrice"] +"</td><td> "+ plDic[i]["highLow"] +"</td><td>"+ plDic[i]["volatility"] +"</td><td>"+ plDic[i]["signal"] +"</td><td>"+ plDic[i]["profit"] +"</td><td>"+ plDic[i]["profitPercentage"] +"</td></tr>"); 
+              }
+          }
+      </script>
+      <script>  
+        function add_reports(reportDic){
+            var d3 = document.getElementById('statistical-feedback');
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Time Period " + "</td><td>"+ reportDic.timePeriod +"</td></tr>"); 
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Initial Capital " + "</td><td>"+ reportDic.initialCapital +"</td></tr>"); 
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Ending Captial " + "</td><td>"+ reportDic.endingCaptial +"</td></tr>"); 
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Exposure " + "</td><td>"+ reportDic.exposure +"</td></tr>"); 
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Avg Profit Loss " + "</td><td>"+ reportDic.avgProfitLoss +"</td></tr>"); 
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Avg ProfitLoss % " + "</td><td>"+ reportDic.avgProfitLossPercentage +"</td></tr>"); 
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Avg Profit " + "</td><td>"+ reportDic.avgProfit +"</td></tr>"); 
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Avg Profit % " + "</td><td>"+ reportDic.avgProfitPercentage +"</td></tr>"); 
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Net Profit " + "</td><td>"+ reportDic.netProfit +"</td></tr>"); 
+            d3.insertAdjacentHTML('beforeend', "<tr><td>" + " Net Profit % " + "</td><td>"+ reportDic.netProfitPercentage +"</td></tr>"); 
+            var d4 = document.getElementById('trade-feedback');
+            d4.insertAdjacentHTML('beforeend', "<tr><td>" + " No of Positive Trades " + "</td><td>"+ reportDic.number_of_positive_trades +"</td></tr>"); 
+            d4.insertAdjacentHTML('beforeend', "<tr><td>" + " No of Negative Trades " + "</td><td>"+ reportDic.number_of_negative_trades +"</td></tr>"); 
+            d4.insertAdjacentHTML('beforeend', "<tr><td>" + " Total Number of Trades " + "</td><td>"+ reportDic.number_of_total_trades +"</td></tr>"); 
+            d4.insertAdjacentHTML('beforeend', "<tr><td>" + " Max Profit in One Trade " + "</td><td>"+ reportDic.max_profit_in_one_trade +"</td></tr>"); 
+            d4.insertAdjacentHTML('beforeend', "<tr><td>" + " Max Loss in One Trade " + "</td><td>"+ reportDic.max_loss_in_one_trade +"</td></tr>"); 
+            d4.insertAdjacentHTML('beforeend', "<tr><td>" + " PL of Total Positive Trades " + "</td><td>"+ reportDic.pandl_of_total_positive_trade +"</td></tr>"); 
+            d4.insertAdjacentHTML('beforeend', "<tr><td>" + " PL of Total Negative Trades " + "</td><td>"+ reportDic.pandl_of_total_negative_trade +"</td></tr>"); 
+            d4.insertAdjacentHTML('beforeend', "<tr><td>" + " PL of Total Trades " + "</td><td>"+ reportDic.pandl_of_total_trades+"</td></tr>"); 
+            d4.insertAdjacentHTML('beforeend', "<tr><td>" + " Strike Rate " + "</td><td>"+ reportDic.strike_rate +"</td></tr>"); 
+        }
+      </script>
+      <script>
+          $(document).on('submit', "#backtest-form", function(e, response){
+              e.preventDefault();
+              $.ajax({
+                  type: 'GET',
+                  url: '{% url "backtestResult" %}',
+                  data:
+                  {
+                      stockName: $("#stockName").val(),
+                      fund: $("#fund").val(),
+                      psarStart: $("#psarStart").val(),
+                      psarIncrement: $("#psarIncrement").val(),
+                      psarMaxvalue: $("#psarMaxvalue").val(),
+                      timeFrame: $("#timeFrame").val(),
+                      fromDate: $("#fromDate").val(),
+                      toDate: $("#toDate").val(),
+                  },
+                  success: function(response){
+                      console.log("#####################")
+                      console.log(response.pl_df)
+                      add_detailed_table(response.result);
+                      add_profitloss_table(response.pl_df);
+                      // add_reports(response.report_dic);
+                      // generate_capital_graph(response.report_dic.initialCapital, response.report_dic.endingCaptial);
+                      // generate_trades_graph(response.report_dic.number_of_positive_trades, response.report_dic.number_of_negative_trades);
+                      // generate_drawdown_graph(response.report_dic.max_profit_in_one_trade, response.report_dic.max_loss_in_one_trade);
+                      // generate_profitloss_graph(response.report_dic.pandl_of_total_positive_trade, response.report_dic.pandl_of_total_negative_trade);
+                      // generate_invested_graph(response.report_dic.initialCapital, response.report_dic.endingCaptial);
+                      // generate_volatility_graph(response.report_dic.dateLis, response.report_dic.indVolatility, response.report_dic.volatility);
+                      // generate_volatility_graphs();
+                      // console.log(response.result);
+                  },
+              })
+          });
+      </script>
+      
+  </body>
+</html>
