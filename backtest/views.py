@@ -37,6 +37,7 @@ def backtest_result(request):
         context = {
             "result" :result_df,
             "pl_df" : pl_df,
+            "s": 's'
         }
         return JsonResponse(context)   
     
