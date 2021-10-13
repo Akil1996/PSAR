@@ -14,9 +14,10 @@ def psar_strategy(df):
     return result_dic
 
 
-def dreport_main(stockName, psarStart, psarIncrement, psarMaxvalue, timeFrame, fromDate, toDate, pIncrement, pMaxvalue):
+def dreport_main(stockName, psarStart, psarIncrement, psarMaxvalue, timeFrame, fromDate, toDate):
+    print(psarIncrement, psarMaxvalue)
     df = historical_data(stockName, timeFrame, fromDate, toDate)
-    df['SAR'] = talib.SAR(df.high, df.low, 0.02, 0.2)
+    df['SAR'] = talib.SAR(df.high, df.low, psarIncrement, psarMaxvalue)
     # a = addSAR(df)
     # print(a)
     df = atr(df, 14)
