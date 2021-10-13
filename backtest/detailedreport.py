@@ -17,9 +17,8 @@ def psar_strategy(df):
 def dreport_main(stockName, psarStart, psarIncrement, psarMaxvalue, timeFrame, fromDate, toDate):
     print(psarIncrement, psarMaxvalue)
     df = historical_data(stockName, timeFrame, fromDate, toDate)
-    df['SAR'] = talib.SAR(df.high, df.low, psarIncrement, psarMaxvalue)
-    # a = addSAR(df)
-    # print(a)
+    df["SAR"] = talib.SAREXT(df.high, df.low, startvalue=0.05, offsetonreverse=0, accelerationinitlong=0.05, accelerationlong=0.02,
+           accelerationmaxlong=0.5, accelerationinitshort=0.05, accelerationshort=0.02, accelerationmaxshort=0.5)
     df = atr(df, 14)
     df = volatility_measure(df)
     df = df.loc[fromDate:toDate]
