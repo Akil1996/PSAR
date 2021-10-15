@@ -8,22 +8,25 @@ def psar_profitloss_strategy(stockName, df, fund):
     result = []
     quantity = 0
     for index, row in df.iterrows():
-        # print(index,row.close, row.SAR)
         if 0 < row.SAR and signal == None:
             quantity = round(fund/row.close)
             ePrice = row.close
             etime = index
-            result.append({"entryTime": index, "exitTime": "", "entryPrice": row.close, "exitPrice": "", "high": "", "low": "","indVolatility": row.ATR, "volatility": row.Volatility, "signal": "BUY",  "profit": " ", "profitPercentage": "", "Fund": ""})
+            result.append({"entryTime": index, "exitTime": "", "entryPrice": row.close, "exitPrice": "", "high": "", "low": "","indVolatility": row.ATR, "volatility": " ", "signal": "BUY",  "profit": " ", "profitPercentage": "", "fundSentence": ""})
             signal = "BUY"
         if 0 > row.SAR and signal == "BUY":
             sDf = df.loc[etime : index]
+            sDf = sDf[1:]
             dfHigh = sDf["close"].max()
             dfLow = sDf["close"].min()
             exPrice = row.close - ePrice 
             purchased = ePrice * quantity
             sold = row.close * quantity
+            value1 = ePrice - dfLow
+            value2 = value1/ePrice
+            results = value2* 100
             fundSentence = "Stock" + stockName + str(etime)+" - "+  str(index) + " buy for "+ str(ePrice) + " = " + str(quantity) + "shares. sale on "+ str(row.close) +" = " + str(quantity)+ "shares , purchased "+ str(quantity) + "shares at "+ str(purchased) +"and sold "+ str(quantity) +"value of shares = "+ str(sold)
-            result.append({"entryTime": "", "exitTime": index, "entryPrice": "", "exitPrice": row.close, "high": dfHigh, "low": dfLow,"indVolatility": row.ATR, "volatility": row.Volatility, "signal": "SELL",  "profit": exPrice, "profitPercentage": str(round(((exPrice/row.close)*100),2)) + " %", "fundSentence": fundSentence})
+            result.append({"entryTime": "", "exitTime": index, "entryPrice": "", "exitPrice": row.close, "high": dfHigh, "low": dfLow,"indVolatility": row.ATR, "volatility": str(results), "signal": "SELL",  "profit": exPrice, "profitPercentage": str(round(((exPrice/row.close)*100),2)) + " %", "fundSentence": fundSentence})
             signal = None
     return result
 
