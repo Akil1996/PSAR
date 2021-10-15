@@ -421,9 +421,9 @@
           function add_profitloss_table(plDic){
               var d2 = document.getElementById('PL-report');
               d2.innerHTML = "";
-              d2.insertAdjacentHTML('afterbegin', "<tr><th>Entry DateTime</th><th>Exit DateTime</th><th>Entry Price</th><th>Exit Price</th><th>High</th><th>Low</th><th>Volatility</th><th>Signal</th><th>PL</th><th>PL %</th></tr>");
+              d2.insertAdjacentHTML('afterbegin', "<tr><th>Entry DateTime</th><th>Exit DateTime</th><th>Entry Price</th><th>Exit Price</th><th>High</th><th>Low</th><th>Volatility</th><th>Signal</th><th>PL</th><th>PL %</th><th>fundSentence</th></tr>");
               for (let i = 0; i < plDic.length; i++) {
-                   d2.insertAdjacentHTML('beforeend', "<tr><td>" + plDic[i]["entryTime"] + "</td><td> "+ plDic[i]["exitTime"] +"</td><td> "+ plDic[i]["entryPrice"] +"</td><td>"+ plDic[i]["exitPrice"] +"</td><td> "+ plDic[i]["high"] +"</td><td> "+ plDic[i]["low"] +"</td><td>"+ plDic[i]["volatility"] +"</td><td>"+ plDic[i]["signal"] +"</td><td>"+ plDic[i]["profit"] +"</td><td>"+ plDic[i]["profitPercentage"] +"</td></tr>"); 
+                   d2.insertAdjacentHTML('beforeend', "<tr><td>" + plDic[i]["entryTime"] + "</td><td> "+ plDic[i]["exitTime"] +"</td><td> "+ plDic[i]["entryPrice"] +"</td><td>"+ plDic[i]["exitPrice"] +"</td><td> "+ plDic[i]["high"] +"</td><td> "+ plDic[i]["low"] +"</td><td>"+ plDic[i]["volatility"] +"</td><td>"+ plDic[i]["signal"] +"</td><td>"+ plDic[i]["profit"] +"</td><td>"+ plDic[i]["profitPercentage"] +"</td><td>"+ plDic[i]["fundSentence"] +"</td></tr>"); 
               }
           }
       </script>

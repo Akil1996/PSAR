@@ -7,14 +7,25 @@ import datetime as dt
 
 
 
-def historical_data(stockName, timeFrame, fromDate, toDate):
-
+def historical_data(stockName, timeFrame, fromDate, toDate, dayMinus):
     if timeFrame == "day":
         fromDate = dt.date.fromisoformat(fromDate)
-        sliceDate = str(fromDate -  dt.timedelta(days=60))
-        data = yf.download(tickers = stockName, period = "ytd", interval = "1d",  start= sliceDate, end= toDate, group_by = 'ticker', auto_adjust = True, prepost = True, threads = True,proxy = None)
+        sliceDate = str(fromDate -  dt.timedelta(days=dayMinus))
+        data = yf.download(tickers = stockName, period = "ytd", interval = "1d",  start= sliceDate, end= toDate, group_by = 'ticker', prepost = True, threads = True,proxy = None)
         data = data.reset_index()
-        data.columns = ["dtime", "open", "high", "low", "close", "volume"]
+        data.columns = ["dtime", "open", "high", "low", "close", "ac","volume"]
+        df = pd.DataFrame(data)
+        df.set_index("dtime", inplace=True)
+        print(df)
+        return df
+    if timeFrame == "week":
+        print(dayMinus)
+        print("######################")
+        fromDate = dt.date.fromisoformat(fromDate)
+        sliceDate = str(fromDate -  dt.timedelta(days=dayMinus))
+        data = yf.download(tickers = stockName, period = "ytd", interval = "1wk",  start= sliceDate, end= toDate, group_by = 'ticker', prepost = True, threads = True,proxy = None)
+        data = data.reset_index()
+        data.columns = ["dtime", "open", "high", "low", "close", "ac","volume"]
         df = pd.DataFrame(data)
         df.set_index("dtime", inplace=True)
         return df
